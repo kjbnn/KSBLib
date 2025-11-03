@@ -194,7 +194,10 @@ begin
             if(r.StrData[r.EndPointer+i]<>#0) then
               begin
                 str:=str+r.StrData[r.EndPointer+i];
-                Dec(s.CountByte);
+                if (s<>nil)and(s.CountByte>0) then //kjb
+                  Dec(s.CountByte)
+                else if (s=nil) then
+                  raise Exception.Create('Error Message: s=Nil');
                 Inc(i);
               end
             else
@@ -256,7 +259,7 @@ var
     debug : AnsiString;
 begin
     inherited;
-     debug:='0';
+    debug:='0';
     if(s.FILL>0) then
       begin
         _Buffer.Clear();
@@ -278,7 +281,7 @@ begin
         _Buffer.Delete(0);
         debug:='5';
       except
-        Showmessage('Hey: ' + debug);
+        Showmessage('TSharedString.SendTimer error: ' + debug);
       end;
       end;
 end;
@@ -299,7 +302,7 @@ var
     //j:DWORD;//bsl, 28.06.2014
     j:WORD;
 begin
-     j:=0;
+    j:=0;
     //while j<DWORD(Length(str)) do //bsl, 28.06.2014
     while j<WORD(Length(str)) do
       begin
